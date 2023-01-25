@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssFeed", ".\Assemblies\RssFeed\RssFeed.csproj", "{CC644380-E0FE-4472-A72D-68F87F812F96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssFeed", "Assemblies\RssFeed\RssFeed.csproj", "{CC644380-E0FE-4472-A72D-68F87F812F96}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Asseblies", "Asseblies", "{5DC53C6B-35AA-4EE3-8645-27926A9E9025}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2779BA87-A002-4AED-81FE-AD29B3BC9F47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssFeedAPI.DataAccessLayer", "Assemblies\RssFeedAPI.DataAccessLayer\RssFeedAPI.DataAccessLayer.csproj", "{9313AD29-0258-46ED-B499-2B701E9F7FCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +21,17 @@ Global
 		{CC644380-E0FE-4472-A72D-68F87F812F96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC644380-E0FE-4472-A72D-68F87F812F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC644380-E0FE-4472-A72D-68F87F812F96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9313AD29-0258-46ED-B499-2B701E9F7FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9313AD29-0258-46ED-B499-2B701E9F7FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9313AD29-0258-46ED-B499-2B701E9F7FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9313AD29-0258-46ED-B499-2B701E9F7FCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CC644380-E0FE-4472-A72D-68F87F812F96} = {5DC53C6B-35AA-4EE3-8645-27926A9E9025}
+		{9313AD29-0258-46ED-B499-2B701E9F7FCA} = {5DC53C6B-35AA-4EE3-8645-27926A9E9025}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2FD3C9D3-DA9E-40C9-A2E0-09CFC0B1F89D}
