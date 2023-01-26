@@ -27,10 +27,10 @@ namespace RssFeed.Services.Implementations
             return newdFeed;
         }
 
-        public async Task<GetAllFeeds> GetAllFeedsAsync(int feedModel)
+        public async Task<GetAllFeedsResponce> GetAllFeedsAsync()
         {
             var allFeeds = await _feedRepository.GetAllFeedsAsync();
-            return (GetAllFeeds)allFeeds ;
+            return new GetAllFeedsResponce { Feeds = allFeeds.ToList() };
         }
     }
 }

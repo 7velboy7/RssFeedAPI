@@ -27,7 +27,7 @@ namespace RssFeedAPI.DataAccessLayer.Repositories.RepositoryImplementations
 
         public async Task<IEnumerable<Feed>> GetAllFeedsAsync()
         {
-            return await _context.feeds.ToListAsync();
+            return await _context.Feeds.ToListAsync();
         }
     }
 }

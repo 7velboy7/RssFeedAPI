@@ -13,6 +13,12 @@ namespace RssFeed.Controllers
         private readonly IFeedService _feedService;
         private readonly ILogger<FeedController> _logger;
 
+        public FeedController(IFeedService feedService, ILogger<FeedController> logger)
+        {
+            _feedService = feedService;
+            _logger = logger;
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddFeedAsync(CreateFeedRequestModel feedModel) 
         {
@@ -20,7 +26,7 @@ namespace RssFeed.Controllers
             {
                 var resultFedd = await _feedService.AddFeedAsync(feedModel);
                 _logger.LogInformation("feed was added");
-                return Ok(resultFedd);
+                return StatusCode(StatusCodes.Status201Created, resultFedd);
             }
             catch (Exception)
             {
@@ -29,9 +35,9 @@ namespace RssFeed.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllFeedsAsync(int countOfFeeds)
+        public async Task<IActionResult> GetAllFeedsAsync()
         {
-            var resultFeeds = await _feedService.GetAllFeedsAsync(countOfFeeds);
+            var resultFeeds = await _feedService.GetAllFeedsAsync();
             _logger.LogInformation("Feeds were added");
             return Ok(resultFeeds);
         }

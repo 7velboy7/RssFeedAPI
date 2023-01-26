@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using RssFeedAPI.DataAccessLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,18 @@ namespace RssFeedAPI.DataAccessLayer.Contexts
 {
     public class Context : DbContext
     {
-        public Context(DbContextOptions<Context> options) : base(options)
+        private readonly IConfiguration _cofiguration;
+
+        public Context(DbContextOptions<Context> options, IConfiguration cofiguration) : base(options)
         {
+            _cofiguration = cofiguration;
         }
-        public DbSet<Feed> feeds { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder options)
+        {
+            options.UseSqlServer(_cofiguration.GetConnectionString("DefaultConnection"));
+        }
+        public DbSet<Feed> Feeds { get; set; }
 
     }
 }
