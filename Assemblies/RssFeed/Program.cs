@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using RssFeed.Clients.Implementations;
+using RssFeed.Clients.Interfaces;
 using RssFeed.Services.Implementations;
 using RssFeed.Services.Interfaces;
 using RssFeedAPI.DataAccessLayer.Contexts;
@@ -19,6 +21,9 @@ builder.Services.AddDbContext<Context>(options => options.UseSqlServer(builder.C
     x => x.MigrationsAssembly(typeof(Context).Assembly.GetName().Name)));
 builder.Services.AddTransient<IFeedRepository, FeedRepository>();
 builder.Services.AddTransient<IFeedService, FeedService>();
+builder.Services.AddTransient<INewsService, NewsService>();
+builder.Services.AddTransient<IRssFeedClient, RssFeedClient>();
+
 
 var app = builder.Build();
 
