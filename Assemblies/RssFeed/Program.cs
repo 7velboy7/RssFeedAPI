@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using RssFeed.Clients.Implementations;
 using RssFeed.Clients.Interfaces;
 using RssFeed.Services.Implementations;
@@ -6,6 +7,9 @@ using RssFeed.Services.Interfaces;
 using RssFeedAPI.DataAccessLayer.Contexts;
 using RssFeedAPI.DataAccessLayer.Repositories.RepositoryImplementations;
 using RssFeedAPI.DataAccessLayer.Repositories.RepositoryInterfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +28,30 @@ builder.Services.AddTransient<IFeedService, FeedService>();
 builder.Services.AddTransient<INewsService, NewsService>();
 builder.Services.AddTransient<IRssFeedClient, RssFeedClient>();
 
+builder.Services.AddIdentityCore<IdentityUser>(options =>
+{
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireDigit = false;
+    options.Password.RequireUppercase = false;
+})
+    .AddEntityFrameworkStores<Context>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -35,7 +63,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

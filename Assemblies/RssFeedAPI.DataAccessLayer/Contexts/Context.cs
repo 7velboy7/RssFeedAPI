@@ -1,15 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RssFeedAPI.DataAccessLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RssFeedAPI.DataAccessLayer.Contexts
 {
-    public class Context : DbContext
+    public class Context : IdentityDbContext<IdentityUser>
     {
         private readonly IConfiguration _cofiguration;
 

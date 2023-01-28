@@ -21,6 +21,10 @@ namespace RssFeed.Clients.Implementations
             {
                 if (item.PublishDate >= date)
                 {
+                    //if (item) // this check will be for third parametr: item.inRedList
+                    //{
+
+                    //}
                     publications.Add(new Publication
                     {
                         Title = item.Title.Text,
@@ -32,7 +36,6 @@ namespace RssFeed.Clients.Implementations
 
                     });
                 }
-                
            
             }
           

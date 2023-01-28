@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RssFeed.Services.Implementations;
 using RssFeed.Services.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace RssFeed.Controllers
 {
@@ -19,11 +20,19 @@ namespace RssFeed.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUnreadPublications(DateTimeOffset date)
+        public async Task<IActionResult> GetAllUnreadPublicationsAsync([Required] DateTimeOffset? date)
         {
-            var resultNews = await _newsService.GetAllUnreadNewsPublicationsAsync(date);
+            var resultNews = await _newsService.GetAllUnreadNewsPublicationsAsync(date.Value);
             _logger.LogInformation("News were got");
             return Ok(resultNews);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ReadPublicationAsync()
+        {
+            return Ok();
+
         }
     }
 }

@@ -2,11 +2,6 @@
 using RssFeedAPI.DataAccessLayer.Contexts;
 using RssFeedAPI.DataAccessLayer.Entities;
 using RssFeedAPI.DataAccessLayer.Repositories.RepositoryInterfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RssFeedAPI.DataAccessLayer.Repositories.RepositoryImplementations
 {
