@@ -4,6 +4,6 @@ namespace RssFeed.Clients.Interfaces
 {
     public interface IRssFeedClient
     {
-        public Task<List<Publication>> GetFeedNewsAsync(Uri link);
+        public Task<List<Publication>> GetFeedNewsAsync(Uri link, DateTimeOffset date);
     }
 }

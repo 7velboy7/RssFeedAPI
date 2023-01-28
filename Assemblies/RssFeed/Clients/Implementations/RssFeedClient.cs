@@ -7,7 +7,7 @@ namespace RssFeed.Clients.Implementations
 {
     public class RssFeedClient : IRssFeedClient
     {
-        public Task<List<Publication>> GetFeedNewsAsync(Uri link)
+        public Task<List<Publication>> GetFeedNewsAsync(Uri link, DateTimeOffset date)
         {
             using var reader = XmlReader.Create(link.ToString());
 
@@ -19,17 +19,21 @@ namespace RssFeed.Clients.Implementations
 
             foreach (var item in feedNews.Items) 
             {
-                
-                publications.Add(new Publication
+                if (item.PublishDate >= date)
                 {
-                    Title = item.Title.Text,
-                    Link = item.Links.FirstOrDefault().Uri,
-                    Category = item.Categories.FirstOrDefault()?.Name ?? string.Empty,
-                    PublicationDate = item.PublishDate,
-                    Description = item.Summary.Text,
-                    Author = item.Authors.FirstOrDefault()?.Name ?? string.Empty
+                    publications.Add(new Publication
+                    {
+                        Title = item.Title.Text,
+                        Link = item.Links.FirstOrDefault().Uri,
+                        Category = item.Categories.FirstOrDefault()?.Name ?? string.Empty,
+                        PublicationDate = item.PublishDate,
+                        Description = item.Summary.Text,
+                        Author = item.Authors.FirstOrDefault()?.Name ?? string.Empty
 
-                });
+                    });
+                }
+                
+           
             }
           
             return Task.FromResult(publications);

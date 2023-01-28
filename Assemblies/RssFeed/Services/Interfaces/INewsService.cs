@@ -4,6 +4,6 @@ namespace RssFeed.Services.Interfaces
 {
     public interface INewsService
     {
-        Task<List<Publication>> GetAllUnreadNewsPublicationsAsync();
+        Task<List<Publication>> GetAllUnreadNewsPublicationsAsync(DateTimeOffset date);
     }
 }

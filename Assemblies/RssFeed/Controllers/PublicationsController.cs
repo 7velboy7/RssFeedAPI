@@ -19,9 +19,9 @@ namespace RssFeed.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUnreadPublications()
+        public async Task<IActionResult> GetAllUnreadPublications(DateTimeOffset date)
         {
-            var resultNews = await _newsService.GetAllUnreadNewsPublicationsAsync();
+            var resultNews = await _newsService.GetAllUnreadNewsPublicationsAsync(date);
             _logger.LogInformation("News were got");
             return Ok(resultNews);
         }
