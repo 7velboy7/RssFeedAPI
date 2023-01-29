@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RssFeedAPI.DataAccessLayer.Entities;
 
 namespace RssFeedAPI.DataAccessLayer.Repositories.RepositoryInterfaces
 {
     public interface INewsRepository
     {
+        Task<IEnumerable<ReadPublication>> GetAllReadPublicationsAsync();
+        Task AddReadPublication(ReadPublication publicationLink);
     }
 }

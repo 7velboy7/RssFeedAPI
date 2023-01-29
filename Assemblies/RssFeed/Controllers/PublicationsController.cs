@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RssFeed.DTOs.Requests;
 using RssFeed.Services.Implementations;
 using RssFeed.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
@@ -8,6 +10,7 @@ namespace RssFeed.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PublicationsController : ControllerBase
     {
         private readonly INewsService _newsService;
@@ -29,10 +32,10 @@ namespace RssFeed.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> ReadPublicationAsync()
+        public async Task<IActionResult> ReadPublicationAsync(AddReadPublicationRequestModel alreadyReadPublication)
         {
-            return Ok();
-
+            await _newsService.AddReadPublicationAsync(alreadyReadPublication);
+            return StatusCode(StatusCodes.Status201Created);
         }
     }
 }

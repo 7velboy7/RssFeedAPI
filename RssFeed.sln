@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Asseblies", "Asseblies", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{2779BA87-A002-4AED-81FE-AD29B3BC9F47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RssFeedAPI.DataAccessLayer", "Assemblies\RssFeedAPI.DataAccessLayer\RssFeedAPI.DataAccessLayer.csproj", "{9313AD29-0258-46ED-B499-2B701E9F7FCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RssFeedAPI.DataAccessLayer", "Assemblies\RssFeedAPI.DataAccessLayer\RssFeedAPI.DataAccessLayer.csproj", "{9313AD29-0258-46ED-B499-2B701E9F7FCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

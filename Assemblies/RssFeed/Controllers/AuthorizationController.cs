@@ -78,7 +78,7 @@ namespace RssFeed.Controllers
             }
 
             _Logger.LogInformation("user was created");
-            return Ok(StatusCodes.Status201Created);
+            return Ok();
 
         }
 

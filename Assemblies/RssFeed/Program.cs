@@ -21,11 +21,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<Context>(options => options.UseSqlServer(builder.Configuration["ConnectonStrings:DefaultConnection"],
+builder.Services.AddDbContext<Context>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"],
     x => x.MigrationsAssembly(typeof(Context).Assembly.GetName().Name)));
 builder.Services.AddTransient<IFeedRepository, FeedRepository>();
 builder.Services.AddTransient<IFeedService, FeedService>();
 builder.Services.AddTransient<INewsService, NewsService>();
+builder.Services.AddTransient<INewsRepository, NewsRepository>();
 builder.Services.AddTransient<IRssFeedClient, RssFeedClient>();
 
 builder.Services.AddIdentityCore<IdentityUser>(options =>

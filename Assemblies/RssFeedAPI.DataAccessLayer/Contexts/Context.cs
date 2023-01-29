@@ -15,11 +15,13 @@ namespace RssFeedAPI.DataAccessLayer.Contexts
             _cofiguration = cofiguration;
         }
 
+        public DbSet<Feed> Feeds { get; set; }
+        public DbSet<ReadPublication> ReadPublications { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
             options.UseSqlServer(_cofiguration.GetConnectionString("DefaultConnection"));
         }
-        public DbSet<Feed> Feeds { get; set; }
 
     }
 }
