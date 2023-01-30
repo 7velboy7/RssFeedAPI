@@ -30,18 +30,28 @@ namespace RssFeed.Controllers
                 _logger.LogInformation("feed was added");
                 return StatusCode(StatusCodes.Status201Created, resultFedd);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                _logger.LogError(ex, $"Failed to add a new feed '{feedModel.Link}' for user '{HttpContext.User.Identity.Name}'");
+                return StatusCode(StatusCodes.Status500InternalServerError, "For more information check log files.");
             }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllFeedsAsync()
         {
-            var resultFeeds = await _feedService.GetAllFeedsAsync();
-            _logger.LogInformation("Feeds were added");
-            return Ok(resultFeeds);
+            try
+            {
+                var resultFeeds = await _feedService.GetAllFeedsAsync();
+                _logger.LogInformation("Feeds were added");
+                return Ok(resultFeeds);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Failed to get feeds for user '{HttpContext.User.Identity.Name}'");
+                return StatusCode(StatusCodes.Status500InternalServerError, "For more information check log files.");
+            }
+           
         }
     }
 }

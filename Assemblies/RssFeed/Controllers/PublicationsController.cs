@@ -25,17 +25,35 @@ namespace RssFeed.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUnreadPublicationsAsync([Required] DateTimeOffset? date)
         {
-            var resultNews = await _newsService.GetAllUnreadNewsPublicationsAsync(date.Value);
-            _logger.LogInformation("News were got");
-            return Ok(resultNews);
+            try
+            {
+                var resultNews = await _newsService.GetAllUnreadNewsPublicationsAsync(date.Value);
+                _logger.LogInformation("News were got");
+                return Ok(resultNews);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"News could not be found for user '{HttpContext.User.Identity.Name}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "For more information check log files.");
+            }
+
         }
 
 
         [HttpPost]
         public async Task<IActionResult> ReadPublicationAsync(AddReadPublicationRequestModel alreadyReadPublication)
         {
-            await _newsService.AddReadPublicationAsync(alreadyReadPublication);
-            return StatusCode(StatusCodes.Status201Created);
+            try
+            {
+                await _newsService.AddReadPublicationAsync(alreadyReadPublication);
+                return StatusCode(StatusCodes.Status201Created);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"News could not be found for user '{HttpContext.User.Identity.Name}");
+                return StatusCode(StatusCodes.Status500InternalServerError, "For more information check log files.");
+            }
+
         }
     }
 }

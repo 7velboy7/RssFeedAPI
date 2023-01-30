@@ -14,14 +14,14 @@ namespace RssFeed.Controllers
     [ApiController]
     public class AuthorizationController : ControllerBase
     {
-        private readonly ILogger<AuthorizationController> _Logger;
+        private readonly ILogger<AuthorizationController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _configuration;
 
         public AuthorizationController(IConfiguration configuration, ILogger<AuthorizationController> logger, UserManager<IdentityUser> userManager)
         {
             _configuration = configuration;
-            _Logger = logger;
+            _logger = logger;
             _userManager = userManager;
         }
 
@@ -30,25 +30,34 @@ namespace RssFeed.Controllers
         [HttpPost]
         public async Task<IActionResult> LoginAsync(UserLoginRequestModel user)
         {
-            var expectedUser = await _userManager.FindByNameAsync(user.UserName);
-            if (expectedUser != null && await _userManager.CheckPasswordAsync(expectedUser, user.Password))
+            try
             {
-                var authClaims = new List<Claim>()
+                var expectedUser = await _userManager.FindByNameAsync(user.UserName);
+                if (expectedUser != null && await _userManager.CheckPasswordAsync(expectedUser, user.Password))
                 {
+                    var authClaims = new List<Claim>()
+                    {
                     new Claim(ClaimTypes.Name, expectedUser.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
+                    };
 
-                var token = GetToken(authClaims);
-                _Logger.LogInformation("User eas foumd and new token was generated");
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                });
+                    var token = GetToken(authClaims);
+                    _logger.LogInformation("User eas foumd and new token was generated");
+                    return Ok(new
+                    {
+                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                        expiration = token.ValidTo
+                    });
+                }
+
+                return BadRequest("incorrect credentials");
             }
-            _Logger.LogError("User was not found or credettials weren't correct");
-            return StatusCode(StatusCodes.Status403Forbidden);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"User was not found or credettials weren't correct ");
+                return StatusCode(StatusCodes.Status500InternalServerError, "For more information check log files.");
+            }
+
         }
 
 
@@ -56,29 +65,38 @@ namespace RssFeed.Controllers
         [Route("register")]
         public async Task<IActionResult> RegisterAsync(RegistrationRequestModel registrationModel)
         {
-            var userExist = await _userManager.FindByEmailAsync(registrationModel.EmailAddress);
-            if (userExist != null)
+            try
             {
-                _Logger.LogInformation("user already exist");
-                return StatusCode(StatusCodes.Status400BadRequest);
+                var userExist = await _userManager.FindByEmailAsync(registrationModel.EmailAddress);
+                if (userExist != null)
+                {
+                    _logger.LogInformation("user already exist");
+                    return StatusCode(StatusCodes.Status400BadRequest);
+                }
+
+                IdentityUser user = new()
+                {
+                    Email = registrationModel.EmailAddress,
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    UserName = registrationModel.UserName
+                };
+
+                var result = await _userManager.CreateAsync(user, registrationModel.Password);
+                if (!result.Succeeded)
+                {
+                    _logger.LogError("user creation failed. Check details and try again");
+                    return StatusCode(StatusCodes.Status400BadRequest);
+                }
+
+                _logger.LogInformation("user was created");
+                return Ok();
             }
 
-            IdentityUser user = new()
+            catch (Exception ex)
             {
-                Email = registrationModel.EmailAddress,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = registrationModel.UserName
-            };
-
-            var result = await _userManager.CreateAsync(user, registrationModel.Password);
-            if (!result.Succeeded)
-            {
-                _Logger.LogError("user creation failed. Check details and try again");
-                return StatusCode(StatusCodes.Status400BadRequest);
+                _logger.LogError(ex, $"User creation failed");
+                return StatusCode(StatusCodes.Status500InternalServerError, "For more information check log files.");
             }
-
-            _Logger.LogInformation("user was created");
-            return Ok();
 
         }
 
